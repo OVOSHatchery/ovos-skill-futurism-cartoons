@@ -27,7 +27,11 @@ class FuturismComicsSkill(MycroftSkill):
     # futurism cartoons api
     def get_cartoons(self):
         if time.time() - self.last_sync > 60 * 60 * 6:
-            self.cartoons = get_posts("futurismcartoons")
+            # This is a list os post ids that should be skipped, usually ads
+            # TODO find a mechanism other than a manually maintained list
+            skips = ['2135177480425138062',
+                     '2103822161740647491']
+            self.cartoons = get_posts("futurismcartoons", skips)
             self.last_sync = time.time()
         return self.cartoons
 

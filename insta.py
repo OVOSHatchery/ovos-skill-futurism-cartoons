@@ -282,12 +282,19 @@ class Instagram:
                 pass
 
 
-def get_posts(user):
-    return list(reversed(list(Instagram().get_media([user]))))
+def get_posts(user, skips=None):
+    skips = skips or []
+    posts = list(reversed(list(Instagram().get_media([user]))))
+    post_ids = [i['item_id'] for i in posts]
+    for idx, post in enumerate(post_ids):
+        if post in skips:
+            posts.pop(idx)
+    return posts
 
 
 if __name__ == "__main__":
 
     user = "futurismcartoons"
-    for media in get_posts(user):
+    skips = ['2135177480425138062', '2103822161740647491']
+    for media in get_posts(user, skips):
         print(media)
