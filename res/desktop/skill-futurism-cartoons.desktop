@@ -1,0 +1,10 @@
+[Desktop Entry]
+Terminal=false
+Type=Application
+Name=XKCD
+Exec=mycroft-gui-app --hideTextInput --skill=skill-futurism-cartoons.jarbasskills.home
+Icon=skill-icon.png
+Categories=VoiceApp
+StartupNotify=false
+X-DBUS-StartupType=None
+X-KDE-StartupNotify=false

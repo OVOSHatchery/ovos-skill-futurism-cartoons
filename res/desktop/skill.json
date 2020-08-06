@@ -1,0 +1,23 @@
+{
+  "name": "Futurism Cartoons Skill",
+  "skillname": "skill-futurism-cartoons",
+  "authorname": "JarbasSkills",
+  "foldername": "",
+  "url": "https://github.com/JarbasSkills/skill-futurism-cartoons",
+  "branch": "master",
+  "desktopFile": false,
+  "warning": "",
+  "systemDeps": false,
+  "platforms": [
+    "arm",
+    "arm64",
+    "i386",
+    "x86_64",
+    "ia64"
+  ],
+  "examples": [
+    "show me the latest futurism comic",
+    "random futurism cartoon",
+    "how many futurism comics"
+  ]
+}
