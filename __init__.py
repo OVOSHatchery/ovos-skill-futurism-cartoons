@@ -113,6 +113,12 @@ class FuturismComicsSkill(MycroftSkill):
             number = self.total_comics()
         self.display_comic(number)
 
+    @intent_handler(IntentBuilder("RandomFuturismIntent")
+                    .require("another").optionally("picture")
+                    .require("FUTURISM_CARTOON"))
+    def handle_another_comic(self, message=None):
+        self.handle_futurism_random_intent()
+
     def display_comic(self, number=None, speak=True):
         self.gui.clear()
         number = number or self.current_comic
