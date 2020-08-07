@@ -1,1 +1,1 @@
-instagram_scraper
+pynstagram>=0.2.0

@@ -4,7 +4,7 @@ import random
 import time
 from mycroft.skills.core import resting_screen_handler
 from lingua_franca.parse import extract_number
-from .insta import get_posts
+import pynstagram
 
 
 class FuturismComicsSkill(MycroftSkill):
@@ -25,15 +25,23 @@ class FuturismComicsSkill(MycroftSkill):
                                   self.handle_prev_comic)
 
     # futurism cartoons api
+    @staticmethod
+    def get_posts(user="futurismcartoons", skips=None):
+        # This is a list os post ids that should be skipped, usually ads
+        # TODO find a mechanism other than a manually maintained list
+        skips = skips or ['2135177480425138062', '2103822161740647491']
+        posts = list(reversed(list(pynstagram.get_media(user))))
+        post_ids = [i['item_id'] for i in posts]
+        for idx, post in enumerate(post_ids):
+            if post in skips:
+                posts[idx] = None
+        return [p for p in posts if p]
+
     def get_cartoons(self):
         # only sync once every 6 hours
         if time.time() - self.last_sync > 60 * 60 * 6:
-            # This is a list os post ids that should be skipped, usually ads
-            # TODO find a mechanism other than a manually maintained list
-            skips = ['2135177480425138062',
-                     '2103822161740647491']
             self.log.info("Retrieving futurism cartoons")
-            self.cartoons = get_posts("futurismcartoons", skips)
+            self.cartoons = self.get_posts()
             self.last_sync = time.time()
         return self.cartoons
 
@@ -114,12 +122,13 @@ class FuturismComicsSkill(MycroftSkill):
         self.gui['imgLink'] = data["url"]
         self.gui['title'] = "FuturismCartoons#" + str(self.total_comics())
         self.gui['caption'] = data["text"].split("\n")[0].split("#")[0]
+        self.gui["raw_data"] = data
         self.gui.show_page("comic.qml", override_idle=True)
         self.set_context("FUTURISM_CARTOON", str(number))
         if speak:
             utt = data["text"].split("\n")[0].split("#")[0]
             self.speak(utt, wait=True)
-        
+
 
 def create_skill():
     return FuturismComicsSkill()
